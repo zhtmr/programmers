@@ -1,4 +1,4 @@
-package org.example.programmers;
+package org.example.programmers.number_pairs;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,19 +16,14 @@ public class NumberPairs {
             List<String> xList = Arrays.stream(XcharArray).collect(Collectors.toList());
             List<String> yList = Arrays.stream(YcharArray).collect(Collectors.toList());
 
-            int x_num, j_num;
+            int count;
 
-            //    "5525"	"1255"
 
-            for (int i = 0; i < xList.size(); i++) {
-                x_num = Integer.parseInt(xList.get(i));
-                for (int j = 0; j < yList.size(); j++) {
-                    j_num = Integer.parseInt(yList.get(j));
-
-                    if (x_num == j_num) {
-                        nums.add(j_num);
-                        yList.remove(j);
-                        break;
+            for (int i = 0; i <= 9; i++) {
+                count = commonCount(xList, yList, String.valueOf(i));
+                if(count > 0) {
+                    for (int j = 0; j < count; j++) {
+                        nums.add(i);
                     }
                 }
             }
@@ -40,7 +35,7 @@ public class NumberPairs {
             }
 
 
-            if(nums.get(0) == 0) {
+            if(nums.stream().allMatch(e -> e.equals(0))) {
                 answer = "0";
                 return answer;
             }
@@ -53,7 +48,17 @@ public class NumberPairs {
 
 
         }
+
+        private int commonCount(List<String> xList, List<String> yList, String s) {
+            int xcount = (int)xList.stream().filter(e -> e.equals(s)).count();
+            int ycount = (int)yList.stream().filter(e -> e.equals(s)).count();
+            return Math.min(xcount,ycount);
+        }
     }
+
+
+
+
     public static void main(String[] args) {
         String solution = new Solution().solution("100", "123450");
 
